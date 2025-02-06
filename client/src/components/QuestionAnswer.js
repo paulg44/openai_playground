@@ -7,7 +7,7 @@ Plan
 - setAnswer to response from server || In a useEffect when a particular state updates
 */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function QuestionAnswer() {
   const [answer, setAnswer] = useState("Waiting for you question");
@@ -37,33 +37,11 @@ export function QuestionAnswer() {
 
       const data = await response.json();
       console.log("Data sent successfully to server:", data);
-      setAnswer("waiting....");
+      setAnswer(data.answer);
     } catch (error) {
       console.error("Error sending data to server");
     }
   };
-
-  useEffect(() => {
-    const handleReceivedAnswer = async () => {
-      try {
-        const response = await fetch("http://localhost:3047/answer", {
-          method: "GET",
-        });
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.statusText}`);
-        }
-        const answerData = await response.json();
-        console.log("Answer received in client", answerData);
-
-        setAnswer(answerData.message || "No answer received!");
-      } catch (error) {
-        console.error("Answer not received in server:", error);
-        setAnswer("Failed to fetch the answer from server");
-      }
-    };
-
-    handleReceivedAnswer();
-  }, [answer]);
 
   return (
     <section className="container">
