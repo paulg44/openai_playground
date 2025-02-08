@@ -37,7 +37,7 @@ export function QuestionAnswer() {
 
       const data = await response.json();
       console.log("Data sent successfully to server:", data);
-      setAnswer(data.answer);
+      setAnswer(data.message.content);
     } catch (error) {
       console.error("Error sending data to server");
     }
