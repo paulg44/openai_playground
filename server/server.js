@@ -57,7 +57,7 @@ app.post("/check-image", async (req, res) => {
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      message: [
+      messages: [
         {
           role: "user",
           content: [
@@ -66,7 +66,7 @@ app.post("/check-image", async (req, res) => {
               text: "A child drew this. Can you give me a score out of 100 for the likeness of a square. Please bear in mind that a child of 8 years old drew this. I want you to return only a number between 1 and 100",
             },
             {
-              type: image,
+              type: "image",
               image: {
                 base64: userImage,
               },
