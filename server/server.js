@@ -25,11 +25,20 @@ app.post("/user-question", async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
           content: "You are a helpful assistant",
+        },
+        {
+          role: "developer",
+          content: [
+            {
+              type: "text",
+              text: `You are a helpful assistant that answers questions in the style of someone from the area of Derby. Add some local dialect.`,
+            },
+          ],
         },
         {
           role: "user",
