@@ -7,19 +7,10 @@ Things that need to be variables sent from client
 - image (not image url needs to be base64 file)
 */
 
-import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import OpenAI from "openai";
 
 dotenv.config();
-
-const app = express();
-app.use(cors());
-app.options("*", cors());
-app.use(express.json());
-
-const PORT = 3047;
 
 const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
