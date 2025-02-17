@@ -47,19 +47,6 @@ app.post("/user-question", async (req, res) => {
   }
 });
 
-// DON'T ACTUALLY NEED THIS FUNCTION. I CAN JUST SEND IT BACK THROUGH THE POST
-// app.get("/answer", async (req, res) => {
-//   try {
-//     const answer = "This is a test answer to be displayed on page";
-//     res.status(200).json({ message: answer });
-//   } catch (error) {
-//     console.error("Error sending answer from server side:", error);
-//     res
-//       .status(500)
-//       .json({ error: "Failed to send answer to client form server side" });
-//   }
-// });
-
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
