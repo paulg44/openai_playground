@@ -9,7 +9,7 @@ Plan
 
 import { useState } from "react";
 
-export function QuestionAnswer() {
+export default function QuestionAnswer() {
   const [answer, setAnswer] = useState("Waiting for you question");
   const [question, setQuestion] = useState("");
 
