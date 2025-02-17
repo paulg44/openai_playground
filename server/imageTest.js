@@ -1,3 +1,12 @@
+/* 
+I'm unsure how accurate the scoring will be. I think if I were to do it this way I would have to play around with different prompts to get an outcome. 
+
+Things that need to be variables sent from client
+- child's age
+- shape (currently circle)
+- image (not image url needs to be base64 file)
+*/
+
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -22,7 +31,10 @@ const response = await openai.chat.completions.create({
     {
       role: "user",
       content: [
-        { type: "text", text: "Does this image look like a circle" },
+        {
+          type: "text",
+          text: "A child drew this. Can you give me a score out of 100 for the likeness of a circle. Please bear in mind that a child of 8 years old drew this. I want you to return only a number between 1 and 100",
+        },
         {
           type: "image_url",
           image_url: {
