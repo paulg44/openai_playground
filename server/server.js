@@ -1,7 +1,8 @@
-import express from "express";
+import express, { response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const PORT = 3047;
 const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
 const openai = new OpenAI({ apiKey });
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 
 app.post("/user-question", async (req, res) => {
   const { question } = req.body;
@@ -64,30 +66,32 @@ app.post("/check-image", async (req, res) => {
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: "A child drew this. Can you give me a score out of 100 for the likeness of a square. Please bear in mind that a child of 8 years old drew this. I want you to return only a number between 1 and 100",
-            },
-            {
-              type: "image",
-              image: {
-                base64: userImage,
-              },
-            },
-          ],
-        },
-      ],
-      store: true,
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-    const userScore = completion.choices[0].message;
-    res.status(200).json({ message: userScore });
+    const prompt = `A child drew this. Can you give me a score out of 100 for the likeness of a circle. Please bear in mind that a child of 8 years old drew this. I want you to return only a number between 1 and 100`;
+
+    const imageParts = {
+      inlineData: {
+        data: userImage,
+        mimeType: "image/png",
+      },
+    };
+
+    const generateContent = await model.generateContent([prompt, imageParts]);
+
+    const responseText = generateContent.response.text();
+
+    const scoreMatch = responseText.match(/\d+/);
+    const score = scoreMatch ? parseInt(scoreMatch[0], 10) : null;
+
+    if (score === null || score < 1 || score > 100) {
+      console.error("Gemini returned invalid score:", responseText);
+      return res
+        .status(500)
+        .json({ error: "Invalid score returned from Gemini" });
+    }
+
+    res.status(200).json({ score: score });
   } catch (error) {
     console.error("Error reading image in server", error);
     res.status(500).send({ error: "Failed to read image in server" });

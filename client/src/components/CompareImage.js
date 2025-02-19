@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import userCircle from "../assets/images/circle-user.png";
 
 export default function CompareImage() {
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(null);
   const [base64Image, setBase64Image] = useState("");
 
   const convertToBase64 = (blob) => {
@@ -48,7 +48,7 @@ export default function CompareImage() {
       const data = await response.json();
       console.log("Image successfully sent to server:", data);
 
-      setScore(data.message.content);
+      setScore(data.score);
     } catch (error) {
       console.error("Error sending image to server");
     }
@@ -59,7 +59,7 @@ export default function CompareImage() {
       <button type="button" onClick={handleSendingImage}>
         Compare Test
       </button>
-      <p>Score: {score}</p>
+      <p>Score: {score === null ? "Awaiting result..." : score}</p>
     </div>
   );
 }
