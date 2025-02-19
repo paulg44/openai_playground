@@ -36,7 +36,7 @@ app.post("/user-question", async (req, res) => {
           content: [
             {
               type: "text",
-              text: `You are a helpful assistant that answers questions in the style of someone from the area of Derby. Add some local dialect.`,
+              text: `You are a helpful assistant that answers questions in the style of someone from the area of Alvaston, Derby. Add some local dialect. Go over the top with it! Don't mention Alvaston and add me duck in where possible. Also be a unhelpful, abrupt and rude`,
             },
           ],
         },
